@@ -20,14 +20,11 @@ def next_num(n):
 
 def next_day(c: Counter):
     new_c = Counter()
-    new_to_add = 0
     for n, occ in c.items():
         next_n, add_new = next_num(n)
         new_c.update({next_n: occ})
         if add_new:
-            new_to_add = occ
-    if new_to_add:
-        new_c.update({NEW_N_VALUE: new_to_add})
+            new_c.update({NEW_N_VALUE: occ})
     return new_c
 
 
@@ -37,16 +34,18 @@ def day_nth(c, nth=80):
     return c
 
 
-def part_one(filename):
+def print_end_count(filename, nth=80):
     c = load(filename)
-    c = day_nth(c, nth=80)
+    c = day_nth(c, nth)
     print(sum(c.values()))
+
+
+def part_one(filename):
+    print_end_count(filename)
 
 
 def part_two(filename):
-    c = load(filename)
-    c = day_nth(c, nth=256)
-    print(sum(c.values()))
+    print_end_count(filename, 256)
 
 
 part_one('day6.txt')  # 380758 # 10 min
