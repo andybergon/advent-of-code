@@ -1,0 +1,7 @@
+day1: string.strip()
+day2: string.split() defaults to any whitespace
+day3: operator, functools.partial
+day4:
+? append(single_el) vs extend(iterable)
+day5:
+day6: [0] * 100, Counter().update({n:occ})
