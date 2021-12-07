@@ -12,22 +12,15 @@ def min_max(l):
 
 
 def get_cost_1(l, pos):
-    cost = 0
-    for e in l:
-        cost += abs(pos - e)
-    return cost
+    return sum(abs(pos - e) for e in l)
 
 
 def get_cost_2(l, pos):
-    cost = 0
-    for e in l:
-        diff = abs(pos - e)
-        cost += triangular_number(diff)
-    return cost
+    return sum(triangular_number(abs(pos - e)) for e in l)
 
 
 def triangular_number(n):
-    return int(n * (n + 1) / 2)
+    return n * (n + 1) // 2
 
 
 def get_min_cost(l, cost_f):
