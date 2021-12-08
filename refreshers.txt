@@ -5,3 +5,4 @@ day4:
 ? append(single_el) vs extend(iterable)
 day5:
 day6: [0] * 100, Counter().update({n:occ})
+day8: frozenset
