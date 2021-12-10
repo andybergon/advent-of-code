@@ -112,5 +112,5 @@ def part_two(filename):
     print(s)
 
 
-# part_one('day0.txt')  # 633 # 15 min (+30 min debug m[-1] is not OOB)
+# part_one('day10.txt')  # 633 # 15 min (+30 min debug m[-1] is not OOB)
 part_two('day9test.txt')  # ? #
