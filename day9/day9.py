@@ -12,6 +12,7 @@ def load(filename):
 
 
 def neighbours_to_consider(m, p, in_basin):
+    # TODO
     l = []
     i, j = p
     for pp in [(i + ii, j + jj) for ii, jj in ij_offsets]:
@@ -22,19 +23,33 @@ def neighbours_to_consider(m, p, in_basin):
     return l
 
 
+def sum_from_neigh(m, neigh, visited):
+    i, j = neigh
+    visited[i][j] = True
+    neighs = neighbours_to_consider(m, (i, j), visited)  # could just return 0 from recursive
+    if neighs:
+        for neigh in neighs:
+            # TODO
+            # return 1 + sum_from_neigh(m, )
+            pass
+    else:
+        return 0
+
+
 def get_basin_sizes(m):
-    in_basin = [[False * len(m)] * len(m)]
+    visited = [[False * len(m)] * len(m)]
     basin_sizes = []
     current_basin_size = 0
     for i in range(len(m)):
         for j in range(len(m[i])):
             is_lp = is_low_point(i, j, m)
             if is_lp:
-                in_basin[i][j] = True
+                visited[i][j] = True
                 current_basin_size += 1
-                for neigh in neighbours_to_consider(m, (i, j), in_basin):
-                    pass  # TODO
-
+                for neigh in neighbours_to_consider(m, (i, j), visited):
+                    s = sum_from_neigh(m, neigh, visited)
+                    current_basin_size += s
+                basin_sizes.append(current_basin_size)
     return basin_sizes
 
 
@@ -97,5 +112,5 @@ def part_two(filename):
     print(s)
 
 
-# part_one('day9.txt')  # 633 # 15 min (+30 min debug m[-1] is not OOB)
+# part_one('day0.txt')  # 633 # 15 min (+30 min debug m[-1] is not OOB)
 part_two('day9test.txt')  # ? #
