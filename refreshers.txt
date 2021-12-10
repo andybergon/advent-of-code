@@ -6,3 +6,4 @@ day4:
 day5:
 day6: [0] * 100, Counter().update({n:occ})
 day8: frozenset
+day9: math.prod (py3.8) vs functools.reduce(operator.mul, []) vs np.prod(np.array([]))
