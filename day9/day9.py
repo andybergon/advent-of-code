@@ -11,15 +11,17 @@ def load(filename):
     return matrix
 
 
-def neighbours_to_consider(m, p, in_basin):
-    # TODO
+def neighbours_to_consider(m, p, visited):
     l = []
     i, j = p
     for pp in [(i + ii, j + jj) for ii, jj in ij_offsets]:
         ipp, jpp = pp
-        if ipp >= 0 and jpp >= 0:
-            if in_basin[ipp][jpp]:
-                l.append(ipp, jpp)
+        if 0 <= ipp < len(m) and 0 <= jpp < len(m[0]) \
+                and not visited[ipp][jpp] \
+                and safe_lt(m, (i, j), (ipp, jpp)) \
+                and m[ipp][jpp] != 9:  # hack
+            l.append((ipp, jpp))
+            print((ipp,jpp))
     return l
 
 
@@ -29,21 +31,20 @@ def sum_from_neigh(m, neigh, visited):
     neighs = neighbours_to_consider(m, (i, j), visited)  # could just return 0 from recursive
     if neighs:
         for neigh in neighs:
-            # TODO
-            # return 1 + sum_from_neigh(m, )
-            pass
+            return 1 + sum_from_neigh(m, neigh, visited)
     else:
         return 0
 
 
 def get_basin_sizes(m):
-    visited = [[False * len(m)] * len(m)]
+    visited = [[False for _ in range(len(m[0]))] for _ in range(len(m))]
     basin_sizes = []
     current_basin_size = 0
     for i in range(len(m)):
         for j in range(len(m[i])):
             is_lp = is_low_point(i, j, m)
             if is_lp:
+                print('new LP')
                 visited[i][j] = True
                 current_basin_size += 1
                 for neigh in neighbours_to_consider(m, (i, j), visited):
@@ -54,8 +55,9 @@ def get_basin_sizes(m):
 
 
 def sum_top_basins(m):
-    b = get_basin_sizes(m)
-    return math.prod(sorted(b, reverse=True)[:3])
+    sizes = get_basin_sizes(m)
+    print(sizes)
+    return math.prod(sorted(sizes, reverse=True)[:3])
 
 
 def sum_risk_levels(m):
