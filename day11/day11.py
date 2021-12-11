@@ -26,7 +26,7 @@ def update_increments(m, p, increments):
 def should_continue(m, flashed):
     for i in range(len(m)):
         for j in range(len(m[0])):
-            if m[i][j] > 9 and not(flashed[i][j]):
+            if m[i][j] > 9 and not (flashed[i][j]):
                 return True
     return False
 
@@ -74,6 +74,15 @@ def sum_flashes(m, iterations=100):
     return s
 
 
+def get_sim_iteration(m):
+    size = len(m) * len(m[0])
+    i = 1
+    while True:
+        if count_iteration_flashes(m) == size:
+            return i
+        i += 1
+
+
 def part_one(filename):
     m = load(filename)
     c = sum_flashes(m)
@@ -81,9 +90,10 @@ def part_one(filename):
 
 
 def part_two(filename):
-    l = load(filename)
-    print(l)
+    m = load(filename)
+    i = get_sim_iteration(m)
+    print(i)
 
 
-part_one('day11.txt')  # ? (test = 1656) # ? min
-# part_two('day11test.txt')  # ? # ? min
+# part_one('day11.txt')  # 1634 # 1h30m min
+part_two('day11.txt')  # 210 # 2 min
