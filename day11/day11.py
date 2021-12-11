@@ -23,10 +23,10 @@ def update_increments(m, p, increments):
                 increments[ii][jj] = increments[ii][jj] + 1
 
 
-def should_continue(m):
+def should_continue(m, flashed):
     for i in range(len(m)):
         for j in range(len(m[0])):
-            if m[i][j] > 9:
+            if m[i][j] > 9 and not(flashed[i][j]):
                 return True
     return False
 
@@ -54,7 +54,7 @@ def count_iteration_flashes(m):
             m[i][j] = m[i][j] + 1
 
     flashed = [[False for _ in range(len(m[0]))] for _ in range(len(m))]
-    while should_continue(m):
+    while should_continue(m, flashed):
         increments = [[0 for _ in range(len(m[0]))] for _ in range(len(m))]
         for i in range(len(m)):
             for j in range(len(m[0])):
@@ -62,9 +62,7 @@ def count_iteration_flashes(m):
                     update_increments(m, (i, j), increments)
                     flashed[i][j] = True
         update_state(m, increments)
-        step_c = count_step_flashes(m)
-    flashed_sum = sum([sum(i) for i in m])
-    c += flashed_sum
+    c += count_step_flashes(m)
     return c
 
 
@@ -72,9 +70,6 @@ def sum_flashes(m, iterations=100):
     s = 0
     for i in range(iterations):
         c = count_iteration_flashes(m)
-        if i < 10:
-            print(f'{"=" * 10} {i}')
-            print_matrix(m)
         s += c
     return s
 
@@ -90,5 +85,5 @@ def part_two(filename):
     print(l)
 
 
-part_one('day11test.txt')  # ? (test = 1656) # ? min
+part_one('day11.txt')  # ? (test = 1656) # ? min
 # part_two('day11test.txt')  # ? # ? min
