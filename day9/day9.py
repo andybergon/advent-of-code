@@ -21,7 +21,7 @@ def neighbours_to_consider(m, p, visited):
                 and safe_lt(m, (i, j), (ipp, jpp)) \
                 and m[ipp][jpp] != 9:  # hack
             l.append((ipp, jpp))
-            print((ipp,jpp))
+            print((ipp, jpp))
     return l
 
 
@@ -72,34 +72,27 @@ def sum_risk_levels(m):
 
 
 def is_low_point(i, j, m):
-    # could be reworked with offsets [(-1, 0), (0, 1), (1, 0), (0, -1)] and to exit early
-    lt_up = safe_lt(m, (i, j), (i - 1, j))
-    lt_right = safe_lt(m, (i, j), (i, j + 1))
-    lt_down = safe_lt(m, (i, j), (i + 1, j))
-    lt_left = safe_lt(m, (i, j), (i, j - 1))
-    return lt_down and lt_left and lt_right and lt_up
+    is_lp = True
+    for ii, jj in ij_offsets:
+        is_lp = is_lp and safe_lt(m, (i, j), (i + ii, j + jj))
+    return is_lp
 
 
 def safe_get(m, ij):
     i, j = ij
-    if i < 0 or j < 0:
+    if i < 0 or j < 0 or i >= len(m) or j >= len(m[0]):
         return None
-    try:
+    else:
         return m[i][j]
-    except:
-        return None
 
 
 def safe_lt(m, p1, p2):
-    x1, y1 = p1
-    x2, y2 = p2
-    if x2 < 0 or y2 < 0:
+    i1, j1 = p1
+    i2, j2 = p2
+    if i2 < 0 or j2 < 0 or i2 >= len(m) or j2 >= len(m[0]):
         return True
     else:
-        try:
-            return m[x1][y1] < m[x2][y2]
-        except:
-            return True
+        return m[i1][j1] < m[i2][j2]
 
 
 def part_one(filename):
@@ -114,5 +107,6 @@ def part_two(filename):
     print(s)
 
 
-# part_one('day10.txt')  # 633 # 15 min (+30 min debug m[-1] is not OOB)
+# part_one('day9.txt')  # 633 # 15 min (+30 min debug m[-1] is not OOB)
 part_two('day9test.txt')  # ? #
+# 9 * 14 * 9 = 1134
