@@ -21,19 +21,19 @@ def neighbours_to_consider(m, p, visited):
                 and safe_lt(m, (i, j), (ipp, jpp)) \
                 and m[ipp][jpp] != 9:  # hack
             l.append((ipp, jpp))
-            print((ipp, jpp))
+            print(f'{(ipp, jpp)} = {m[ipp][jpp]}')
     return l
 
 
-def sum_from_neigh(m, neigh, visited):
-    i, j = neigh
+def sum_from_neigh(m, p, visited):
+    i, j = p
     visited[i][j] = True
     neighs = neighbours_to_consider(m, (i, j), visited)  # could just return 0 from recursive
     if neighs:
         for neigh in neighs:
             return 1 + sum_from_neigh(m, neigh, visited)
     else:
-        return 0
+        return 1
 
 
 def get_basin_sizes(m):
@@ -44,13 +44,14 @@ def get_basin_sizes(m):
         for j in range(len(m[i])):
             is_lp = is_low_point(i, j, m)
             if is_lp:
-                print('new LP')
+                print(f'===> LP: {(i,j)} = {m[i][j]}')
                 visited[i][j] = True
                 current_basin_size += 1
                 for neigh in neighbours_to_consider(m, (i, j), visited):
                     s = sum_from_neigh(m, neigh, visited)
                     current_basin_size += s
                 basin_sizes.append(current_basin_size)
+                current_basin_size = 0
     return basin_sizes
 
 
@@ -108,5 +109,4 @@ def part_two(filename):
 
 
 # part_one('day9.txt')  # 633 # 15 min (+30 min debug m[-1] is not OOB)
-part_two('day9test.txt')  # ? #
-# 9 * 14 * 9 = 1134
+part_two('day9test.txt')  # ? # 1h+ # correct for test: 9 * 14 * 9 = 1134

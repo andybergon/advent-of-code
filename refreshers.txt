@@ -1,5 +1,5 @@
 day1: string.strip()
-day2: string.split() defaults to any whitespace
+day2: string.split() defaults to any number of whitespaces
 day3: operator, functools.partial
 day4: tuples are immutables, remove vs pop vs del (not used)
 day5: list.extend(iterable) vs list.append(single_el) (alternative: l1+l2, [*l1, *l2])
@@ -8,3 +8,4 @@ day8: frozenset
 day9: math.prod (py3.8) vs functools.reduce(operator.mul, []) vs np.prod(np.array([])) - [[False] * len(m[0])] * len(m) => m[i][j]=True changes entire colum (same obj ref, use list comprehension)
 day10: import queue = list('abc')
 day11: -
+day12: (*list, ) == tuple(list), defaultdict(set)
