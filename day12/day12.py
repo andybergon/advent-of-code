@@ -1,4 +1,4 @@
-from collections import defaultdict
+from collections import Counter, defaultdict
 
 
 def load(filename):
@@ -7,13 +7,6 @@ def load(filename):
         for row in f:
             edges.append(tuple(row.strip().split('-')))
     return edges
-
-
-def add_or_append(d, k, v):  # built in multimap?
-    if k in d:
-        d[k].append(v)
-    else:
-        d[k] = [v]
 
 
 def get_nexts(e):
@@ -27,31 +20,40 @@ def get_nexts(e):
     return nexts
 
 
-def count_paths(nexts):
+def count_paths(nexts, max_small=1):
     c = 0
     for next in nexts['start']:
-        # curr_path for debugging
-        c += count_paths_rec(next, nexts, set(), ['start', next])
+        counter = Counter([next]) if next.islower() and next != 'end' else Counter()
+        c += count_paths_rec(next, nexts, counter, ['start', next], max_small)
     return c
 
 
-def count_paths_rec(curr, nexts, small_visited, curr_path):
+def can_visit_small(next, small_visited: Counter, max_small):
+    most_common = small_visited.most_common(1)
+    if most_common:
+        most_common = most_common[0][1]
+        if most_common == max_small:
+            return small_visited[next] < 1
+        else:
+            return True
+    return True
+
+
+def count_paths_rec(curr, nexts, small_visited: Counter, curr_path, max_small):
+    # curr_path for debugging only
     if curr == 'end':
         print(curr_path)
         return 1
 
-    if curr.islower():
-        small_visited.add(curr)
-
     c = 0
     for next in nexts[curr]:
         if next.islower():
-            if next not in small_visited:
-                c += count_paths_rec(next, nexts, {*small_visited, next}, [*curr_path, next])
-            else:
-                continue
+            if can_visit_small(next, small_visited, max_small):
+                counter = Counter(small_visited)
+                counter.update([next])
+                c += count_paths_rec(next, nexts, counter, [*curr_path, next], max_small)
         else:
-            c += count_paths_rec(next, nexts, {*small_visited}, [*curr_path, next])
+            c += count_paths_rec(next, nexts, Counter(small_visited), [*curr_path, next], max_small)
     return c
 
 
@@ -64,8 +66,10 @@ def part_one(filename):
 
 def part_two(filename):
     e = load(filename)
-    print(e)
+    n = get_nexts(e)
+    c = count_paths(n, 2)
+    print(c)
 
 
 # part_one('day12.txt')  # 4011 (10/19/226) # 1h?
-part_two('day12test.txt')  # # ? min
+part_two('day12.txt')  # 108035 # 1h? (bug: Counter('foo') != Counter(['foo']), first one uses single chars)
