@@ -42,7 +42,7 @@ def can_visit_small(next, small_visited: Counter, max_small):
 def count_paths_rec(curr, nexts, small_visited: Counter, curr_path, max_small):
     # curr_path for debugging only
     if curr == 'end':
-        print(curr_path)
+        # print(curr_path)
         return 1
 
     c = 0

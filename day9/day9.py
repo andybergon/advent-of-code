@@ -21,7 +21,7 @@ def neighbours_to_consider(m, p, visited):
                 and safe_lt(m, (i, j), (ipp, jpp)) \
                 and m[ipp][jpp] != 9:  # hack
             l.append((ipp, jpp))
-            print(f'{(ipp, jpp)} = {m[ipp][jpp]}')
+            # print(f'{(ipp, jpp)} = {m[ipp][jpp]}')
     return l
 
 
@@ -30,8 +30,10 @@ def sum_from_neigh(m, p, visited):
     visited[i][j] = True
     neighs = neighbours_to_consider(m, (i, j), visited)  # could just return 0 from recursive
     if neighs:
+        c = 1
         for neigh in neighs:
-            return 1 + sum_from_neigh(m, neigh, visited)
+            c += sum_from_neigh(m, neigh, visited)
+        return c
     else:
         return 1
 
@@ -39,19 +41,18 @@ def sum_from_neigh(m, p, visited):
 def get_basin_sizes(m):
     visited = [[False for _ in range(len(m[0]))] for _ in range(len(m))]
     basin_sizes = []
-    current_basin_size = 0
     for i in range(len(m)):
         for j in range(len(m[i])):
             is_lp = is_low_point(i, j, m)
             if is_lp:
-                print(f'===> LP: {(i,j)} = {m[i][j]}')
+                # print(f'===> LP: {(i, j)} = {m[i][j]}')
                 visited[i][j] = True
-                current_basin_size += 1
-                for neigh in neighbours_to_consider(m, (i, j), visited):
-                    s = sum_from_neigh(m, neigh, visited)
-                    current_basin_size += s
+                current_basin_size = 1
+                neighs = neighbours_to_consider(m, (i, j), visited)
+                for neigh in neighs:
+                    current_basin_size += sum_from_neigh(m, neigh, visited)
+                # print(f'==> Basin Size: {current_basin_size}')
                 basin_sizes.append(current_basin_size)
-                current_basin_size = 0
     return basin_sizes
 
 
@@ -77,14 +78,6 @@ def is_low_point(i, j, m):
     for ii, jj in ij_offsets:
         is_lp = is_lp and safe_lt(m, (i, j), (i + ii, j + jj))
     return is_lp
-
-
-def safe_get(m, ij):
-    i, j = ij
-    if i < 0 or j < 0 or i >= len(m) or j >= len(m[0]):
-        return None
-    else:
-        return m[i][j]
 
 
 def safe_lt(m, p1, p2):
