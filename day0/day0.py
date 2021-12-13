@@ -16,5 +16,6 @@ def part_two(filename):
     print(l)
 
 
-part_one('day0test.txt')  # ? # ? min
-# part_two('day0test.txt')  # ? # ? min
+if __name__ == '__main__':
+    part_one('day0test.txt')  # ? # ? min
+    # part_two('day0test.txt')  # ? # ? min
