@@ -15,7 +15,7 @@ if __name__ == '__main__':
     m[6][3] = True
 
     m_np = np.array(m)
+    m_np[1, 1] = True
     m_np_flip = np.flip(m_np, axis=0)
 
-    np.split(m_np, )
     print_m(m_np)
