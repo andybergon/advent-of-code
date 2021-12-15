@@ -1,6 +1,7 @@
-from copy import deepcopy
+import math
 
 ij_offsets = (-1, 0), (0, 1), (1, 0), (0, -1)
+ij_offsets_dr = (0, 1), (1, 0)
 
 
 def load(filename):
@@ -13,32 +14,36 @@ def load(filename):
 
 def neighs_to_visit(m, p, visited):
     neighs = []
-    for (ii, jj) in [(i + p[0], j + p[1]) for i, j in ij_offsets]:
-        if 0 <= ii < len(m) and 0 <= jj < len(m[0]) and not visited[ii][jj]:
+    for (ii, jj) in [(i + p[0], j + p[1]) for i, j in ij_offsets_dr]:
+        if 0 <= ii < len(m) and 0 <= jj < len(m[0]):
             neighs.append((ii, jj))
-    return neighs
+    sorted_neighs = sorted(neighs, key=lambda ij: m[ij[0]][ij[1]])
+    return sorted_neighs
 
 
 def lowest_risk(m):
-    visited = [[False for _ in range(len(m[0]))] for _ in range(len(m))]
-    return lowest_risk_rec(m, (0, 0), visited)
+    costs = [[math.inf for _ in range(len(m[0]))] for _ in range(len(m))]
+    lowest_risk_rec(m, (0, 0), costs, 0)
+    return costs[-1][-1]
 
 
-def lowest_risk_rec(m, p, visited):
+def print_path(path):
+    print('->'.join([str(s) for s in path]))
+
+
+def lowest_risk_rec(m, p, costs, cost):
     i, j = p
+    costs[i][j] = cost
     if p == (len(m) - 1, len(m[0]) - 1):
-        return m[i][j]
+        # print(cost)
+        return
     else:
-        visited[i][j] = True
-        neighs = neighs_to_visit(m, p, visited)
-        if neighs:
-            neigh_risks = []
-            for neigh in neighs:
-                lowest_r = lowest_risk_rec(m, neigh, deepcopy(visited))
-                if lowest_r:
-                    neigh_risks.append(m[i][j] + lowest_r)
-            if neigh_risks:
-                return min(neigh_risks)
+        neighs = neighs_to_visit(m, p, costs)
+        for neigh in neighs:
+            ni, nj = neigh
+            new_cost = cost + m[ni][nj]
+            if new_cost <= costs[ni][nj]:
+                lowest_risk_rec(m, neigh, costs, new_cost)
 
 
 def part_one(filename):
