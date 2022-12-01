@@ -1,25 +1,16 @@
-def load(filename):
-    l = []
-    with open(filename) as f:
-        for row in f:
-            l.append([a for a in row.strip()])
-    return l
+with open('input.txt') as f:
+    curr_cal = 0
+    # could use priority queue
+    top = [0, 0, 0]
+    for line in f:
+        v = line.strip()
+        if len(v) == 0:
+            i = min(top)
+            if curr_cal > i:
+                top[top.index(i)] = curr_cal
+            curr_cal = 0
+        else:
+            curr_cal += int(v)
 
-
-def part_one(filename):
-    l = load(filename)
-    print(l)
-
-
-def part_two(filename):
-    l = load(filename)
-    print(l)
-
-
-def get_filename(is_sample=False):
-    return 'input_sample.txt' if is_sample else 'input.txt'
-
-
-if __name__ == '__main__':
-    part_one(True)  # ? # ? min
-    # part_two(True)  # ? # ? min
+print(top)
+print(sum(top))
