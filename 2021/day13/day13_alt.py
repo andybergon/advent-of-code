@@ -1,7 +1,7 @@
 import numpy as np
 from parse import findall
 
-instr = open('./day13.txt').read()
+instr = open('day13.txt').read()
 P = np.zeros((9999, 9999), bool)
 
 for x, y in findall('{:d},{:d}', instr):

@@ -141,4 +141,4 @@ def part_two(filename='./day5.txt'):
 
 
 # part_one('./day5.txt')
-part_two('./day5.txt')
+part_two('day5.txt')

@@ -1,3 +1,5 @@
+# 2022
+# 2021
 day1: string.strip()
 day2: string.split() defaults to any number of whitespaces
 day3: operator, functools.partial
