@@ -1,19 +1,17 @@
-def load(filename):
+def part_one(is_sample=False):
     l = []
-    with open(filename) as f:
+    with open(get_filename(is_sample)) as f:
         for row in f:
             l.append([a for a in row.strip()])
     return l
 
 
-def part_one(filename):
-    l = load(filename)
-    print(l)
-
-
-def part_two(filename):
-    l = load(filename)
-    print(l)
+def part_two(is_sample=False):
+    l = []
+    with open(get_filename(is_sample)) as f:
+        for row in f:
+            l.append([a for a in row.strip()])
+    return l
 
 
 def get_filename(is_sample=False):
