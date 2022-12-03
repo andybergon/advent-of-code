@@ -1,53 +1,51 @@
-column1_map = {'A': 'rock', 'B': 'paper', 'C': 'scissors'}
-column2_map = {'X': 'rock', 'Y': 'paper', 'Z': 'scissors'}
-column2_part2_map = {'X': 'lose', 'Y': 'draw', 'Z': 'win'}  # me
-shape_points = {'rock': 1, 'paper': 2, 'scissors': 3}
-wins_over = {'rock': 'scissors', 'paper': 'rock', 'scissors': 'paper'}
-loses_over = {v: k for k, v in wins_over.items()}
+def value(e):
+    # ord('a') -> 97 | 1-26
+    # ord('A') -> 65 | 27-52
+    if e.isupper():
+        return ord(e) - (65 - 27)
+    else:
+        return ord(e) - (97 - 1)
 
 
 def part_one(is_sample=False):
-    tot = 0
+    l = []
     with open(get_filename(is_sample)) as f:
         for row in f:
-            oppo, me = row.split()
-            oppo = column1_map[oppo]
-            me = column2_map[me]
-            tot += shape_points[me]
-            if wins_over[me] == oppo:
-                tot += 6
-            elif wins_over[oppo] == me:
-                tot += 0
-            else:
-                tot += 3
-    print(tot)
+            row = row.strip()
+            i = len(row) // 2
+            first, second = row[:i], row[i:]
+            s = set(first)
+            for e in second:
+                if e in s:
+                    l.append(e)
+                    break
+    print(l)
+    print(sum([value(e) for e in l]))
+    return l
 
 
 def part_two(is_sample=False):
-    tot = 0
+    l = []
+    priorities = []
     with open(get_filename(is_sample)) as f:
         for row in f:
-            oppo, result = row.split()
-            oppo = column1_map[oppo]
-            result = column2_part2_map[result]
-            me = get_move(oppo, result)
-            tot += shape_points[me]
-            if wins_over[me] == oppo:
-                tot += 6
-            elif wins_over[oppo] == me:
-                tot += 0
-            else:
-                tot += 3
-    print(tot)
+            l.append(row.strip())
+    groups = list(partition(l, 3))
+    print(groups)
+
+    for group in groups:
+        common = set(group[0])
+        for elf in group[1:]:
+            common = common.intersection(set(elf))
+        priorities.append(common)
+    print(priorities)
+    # min({'a'} is an easy to get single element
+    print(sum([value(min(e)) for e in priorities]))
 
 
-def get_move(other_move, result):
-    if result == 'draw':
-        return other_move
-    elif result == 'win':
-        return loses_over[other_move]
-    else:
-        return wins_over[other_move]
+def partition(l, n):
+    for i in range(0, len(l), n):
+        yield l[i:i + n]
 
 
 def get_filename(is_sample=False):
@@ -55,5 +53,5 @@ def get_filename(is_sample=False):
 
 
 if __name__ == '__main__':
-    part_one(False)  # ? # 15 min
-    # part_two(True)  # ? # 5 min
+    # part_one(False)  # ? # 10 min
+    part_two(False)  # ? # 12 min
