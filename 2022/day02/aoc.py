@@ -19,7 +19,6 @@ def part_one(is_sample=False):
                 if e in s:
                     l.append(e)
                     break
-    print(l)
     print(sum([value(e) for e in l]))
     return l
 
@@ -31,14 +30,12 @@ def part_two(is_sample=False):
         for row in f:
             l.append(row.strip())
     groups = list(partition(l, 3))
-    print(groups)
 
     for group in groups:
         common = set(group[0])
         for elf in group[1:]:
             common = common.intersection(set(elf))
         priorities.append(common)
-    print(priorities)
     # min({'a'} is an easy to get single element
     print(sum([value(min(e)) for e in priorities]))
 
