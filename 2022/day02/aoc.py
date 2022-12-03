@@ -20,7 +20,6 @@ def part_one(is_sample=False):
                     l.append(e)
                     break
     print(sum([value(e) for e in l]))
-    return l
 
 
 def part_two(is_sample=False):
@@ -50,5 +49,5 @@ def get_filename(is_sample=False):
 
 
 if __name__ == '__main__':
-    # part_one(False)  # ? # 10 min
+    part_one(False)  # ? # 10 min
     part_two(False)  # ? # 12 min
