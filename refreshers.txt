@@ -1,4 +1,9 @@
 # 2022
+day3:
+  - ord('a') -> 97
+  - itertools.islice(iterable, start, stop[, step])
+  - set.intersect(iterable) OR set1&set2
+  - min({'a'}) OR {'a'}.pop() ot get single element
 # 2021
 day1: string.strip()
 day2: string.split() defaults to any number of whitespaces
