@@ -3,7 +3,7 @@ def part_one(is_sample=False):
     with open(get_filename(is_sample)) as f:
         for row in f:
             l.append([a for a in row.strip()])
-    return l
+    print(l)
 
 
 def part_two(is_sample=False):
@@ -11,7 +11,7 @@ def part_two(is_sample=False):
     with open(get_filename(is_sample)) as f:
         for row in f:
             l.append([a for a in row.strip()])
-    return l
+    print(l)
 
 
 def get_filename(is_sample=False):
