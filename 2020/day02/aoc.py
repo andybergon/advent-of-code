@@ -12,8 +12,9 @@ def is_valid_one(passwd, mi, ma, ch):
     ch_count = chs.get(ch, 0)
     return mi <= ch_count <= ma
 
+
 def is_valid_two(passwd, pos1, pos2, ch):
-    return (passwd[pos1 -1] == ch) ^ (passwd[pos2 -1] == ch)
+    return (passwd[pos1 - 1] == ch) ^ (passwd[pos2 - 1] == ch)
 
 
 def part_one(is_sample=False):
