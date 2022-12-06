@@ -3,21 +3,15 @@ def get_filename(is_sample=False):
 
 
 def part_one(is_sample=False):
-    l = []
-    with open(get_filename(is_sample)) as f:
-        for row in f:
-            l.append([a for a in row.strip()])
+    l = open(get_filename(is_sample)).read().strip()
     print(l)
 
 
 def part_two(is_sample=False):
-    l = []
-    with open(get_filename(is_sample)) as f:
-        for row in f:
-            l.append([a for a in row.strip()])
+    l = open(get_filename(is_sample)).read().strip()
     print(l)
 
 
 if __name__ == "__main__":
-    part_one(True)  # ? # ? min
-    # part_two(True)  # ? # ? min
+    part_one(True)  # ? # ? mins
+    # part_two(True)  # ? # ? mins
