@@ -1,3 +1,6 @@
+import re
+
+
 def get_filename(is_sample=False):
     return "input_sample.txt" if is_sample else "input.txt"
 
@@ -27,8 +30,6 @@ def get_input(is_sample):
     procedure = procedure.strip().split("\n")
     parsed_procedure = []
     for instr in procedure:
-        import re
-
         m = re.match("move (\d+) from (\d+) to (\d+)", instr)
         parsed_procedure.append([int(v) for v in m.groups()])
 
