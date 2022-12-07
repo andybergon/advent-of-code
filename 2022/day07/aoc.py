@@ -41,13 +41,13 @@ def get_tree(is_sample):
             if folder_name == "..":
                 curr_folder = curr_folder.parent
             elif folder_name in [c.name for c in curr_folder.children]:
-                # nit: could be cleaner (avoid double iteration)
+                # nit: avoid double iteration
                 try:
                     i = [c.name for c in curr_folder.children].index(folder_name)
                 except ValueError:
                     raise Exception("index not found")
                 curr_folder = curr_folder.children[i]
-            elif folder_name == "/":  # handle /
+            elif folder_name == "/":  # nit: could avoid special case
                 curr_folder = root
             else:
                 tmp = Node(folder_name)
