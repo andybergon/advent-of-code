@@ -33,29 +33,23 @@ def is_folder(node):
 
 def get_tree(is_sample):
     lines = open(get_filename(is_sample)).read().strip().split("\n")
-    root = Node("/")
-    curr_folder = root
+    curr_folder = root = Node("/")
     for l in lines:
-        if l.startswith("$ cd"):
-            folder_name = l.split("$ cd ")[1]
-            if folder_name == "..":
-                curr_folder = curr_folder.parent
-            elif child_node := next((c for c in curr_folder.children if c.name == folder_name), None):
-                curr_folder = child_node
-            elif folder_name == "/":  # nit: could avoid special case
+        match l.split():
+            case ['$', 'cd', '/']:
                 curr_folder = root
-            else:
-                tmp = Node(folder_name)
-                curr_folder.children.__add__(tmp)
-                curr_folder = tmp
-        elif l.startswith("$ ls"):
-            pass
-        else:
-            size, name = l.split(" ")
-            if size == "dir":
-                Node(name, parent=curr_folder)
-            else:
-                Node(name, parent=curr_folder, size=int(size))
+            case ['$', 'cd', '..']:
+                curr_folder = curr_folder.parent
+            case ['$', 'cd', folder_name]:
+                curr_folder = next((c for c in curr_folder.children if c.name == folder_name), None)
+            case ['$', 'ls']:
+                pass
+            case ['dir', folder_name]:
+                Node(folder_name, parent=curr_folder)
+            case [size, file_name]:
+                Node(file_name, parent=curr_folder, size=int(size))
+            case _:
+                raise
     populate_sizes(root)
 
     return root
