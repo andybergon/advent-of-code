@@ -51,7 +51,6 @@ def get_tree(is_sample):
             case _:
                 raise
     populate_sizes(root)
-
     return root
 
 
@@ -76,7 +75,7 @@ def part_two(is_sample=False):
     for node in PreOrderIter(root):
         if is_folder(node) and node.size > to_delete:
             candidates.append(node)
-    print(min(candidates, key=lambda c: c.size))
+    print(min(candidates, key=lambda c: c.size).size)
 
 
 if __name__ == "__main__":
