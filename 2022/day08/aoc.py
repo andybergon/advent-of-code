@@ -5,59 +5,6 @@ def get_filename(is_sample=False):
     return "input_sample.txt" if is_sample else "input.txt"
 
 
-def is_visible(h, vis, ij):
-    i, j = ij
-    if vis[ij]:
-        return True
-    if i == 0 or j == 0 or i == len(h) or j == len(h[j]):
-        vis[ij] = True
-        return True
-    # return is_visible_from(h, ij, )
-    return False
-
-
-def part_one_old(is_sample=False):
-    h = [[*row] for row in open(get_filename(is_sample)).read().strip().split("\n")]
-    c = 0
-    vis = {}  # {(i,j): True}
-    for j in range(0, len(h)):
-        for i in range(0, len(h[j])):
-            c += is_visible(h, vis, (i, j))
-    print(c)
-    # obs: would make sense to iterate per "circular layer"
-
-
-def visible_in_seq(seq):
-    indicies = [0]
-    for i in range(1, len(seq)):
-        if seq[i - 1] < seq[i]:
-            indicies.append(i)
-    return indicies
-
-    # indicies = visible_in_seq(seq)
-    # for idx in indicies:
-    #     j = idx if left_to_right else len(seq) - idx - 1
-    #     vis[(i, j)] = True
-
-
-# def visible_in_column(h, vis, j, up_to_down):
-#     seq = []
-#     vis[()]
-#     for i in range(1, len(h)):
-#         seq.append(h[i][j])
-#     indicies = visible_in_seq(seq)
-#     for idx in indicies:
-#         i = idx if up_to_down else len(h[0]) - idx - 1
-#         vis[(i, j)] = True
-
-
-# def print_matrix(h, vis):
-#     for i in range(0, n):
-#         for j in range(0,m):
-#             print(f'{vis.get((i,j), " ")}', end='')
-#         print()
-
-
 def mark_visible_in_row(h, vis, i):
     seq = h[i]
     biggest_so_far = -1
@@ -99,54 +46,31 @@ def part_one(is_sample=False):
         mark_visible_in_row(h, vis, i)
     for j in range(0, len(h[0])):
         visible_in_column(h, vis, j)
-
-    # print_matrix(h, vis)
-    print(vis)
     print(len(vis))
 
 
-def score(h, ij):
+def score_single(h, ij, ascending, i_over_j):
     i_house, j_house = ij
     h_house = h[i_house][j_house]
-    dir_s = []
-
     s = 0
-    for i in range(i_house - 1, -1, -1):  # UP
-        if h[i][j_house] < h_house:
+
+    step = 1 if ascending else -1
+    start = (i_house if i_over_j else j_house) + (step)
+    end = -1 if not ascending else (len(h) if i_over_j else len(h[0]))
+    for x in range(start, end, step):
+        v = h[x][j_house] if i_over_j else h[i_house][x]
+        if v < h_house:
             s += 1
-        elif h[i][j_house] >= h_house:
+        elif v >= h_house:
             s += 1
             break
-    dir_s.append(s)
+    return s
 
-    s = 0
-    for i in range(i_house + 1, len(h)):  # DOWN
-        if h[i][j_house] < h_house:
-            s += 1
-        elif h[i][j_house] >= h_house:
-            s += 1
-            break
-    dir_s.append(s)
 
-    s = 0
-    for j in range(j_house + 1, len(h[0])):  # RIGHT
-        if h[i_house][j] < h_house:
-            s += 1
-        elif h[i_house][j] >= h_house:
-            s += 1
-            break
-    dir_s.append(s)
-
-    s = 0
-    for j in range(j_house - 1, -1, -1):  # LEFT
-        if h[i_house][j] < h_house:
-            s += 1
-        elif h[i_house][j] >= h_house:
-            s += 1
-            break
-    dir_s.append(s)
-
-    return prod(dir_s)
+def score(h, ij):
+    # up, left, down, right
+    dirs = [(0, 1), (0, 0), (1, 1), (1, 0)]
+    return prod([score_single(h, ij, t[0], t[1]) for t in dirs])
 
 
 def part_two(is_sample=False):
