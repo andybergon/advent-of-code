@@ -45,7 +45,9 @@ class Monkey:
 
     @property
     def op(self) -> Callable[[int], int]:
-        return eval(self.op_raw)
+        if not hasattr(self, '_op'):
+            self._op = eval(self.op_raw)
+        return self._op
 
 
 def get_monkeys(is_sample):
@@ -71,7 +73,7 @@ def calc_monkey_business(monkeys: List[Monkey], n_rounds, relief_f: Callable[[in
                 else:
                     target_i = m.true_i
                 monkeys[target_i].items.append(worry)
-            m.items = []
+            m.items.clear()
     monkey_business = math.prod(sorted(inspections, reverse=True)[:2])
     if log:
         print(monkey_business)
@@ -99,13 +101,16 @@ if __name__ == "__main__":
     part_two(False)  # 25712998901 # 30 mins (25m remember lcm (mcm in IT))
 
     # import timeit
-    # print(timeit.timeit(lambda: part_one(False, False), number=1))
-    # print(timeit.timeit(lambda: part_two(False, False), number=1))
+    # print(timeit.timeit(lambda: part_one(False, False), number=10))
+    # print(timeit.timeit(lambda: part_two(False, False), number=10))
 
     # dict vs dataclass
     # dicts
     # p1: 0.0005
     # p2: 0.22
-    # dataclass (per iter)
+    # dataclass (per iter) - re-calc op with eval
+    # p1: ~0.0006
+    # p2: 0.27
+    # dataclass (per iter) - re-calc op with eval
     # p1: ~0.009
     # p2: 4.7
