@@ -1,0 +1,102 @@
+[
+  {
+    "items": [
+      83,
+      97,
+      95,
+      67
+    ],
+    "op": "lambda old: old * 19",
+    "test_div": 17,
+    "true_i": 2,
+    "false_i": 7
+  },
+  {
+    "items": [
+      71,
+      70,
+      79,
+      88,
+      56,
+      70
+    ],
+    "op": "lambda old: old + 2",
+    "test_div": 19,
+    "true_i": 7,
+    "false_i": 0
+  },
+  {
+    "items": [
+      98,
+      51,
+      51,
+      63,
+      80,
+      85,
+      84,
+      95
+    ],
+    "op": "lambda old: old + 7",
+    "test_div": 7,
+    "true_i": 4,
+    "false_i": 3
+  },
+  {
+    "items": [
+      77,
+      90,
+      82,
+      80,
+      79
+    ],
+    "op": "lambda old: old + 1",
+    "test_div": 11,
+    "true_i": 6,
+    "false_i": 4
+  },
+  {
+    "items": [
+      68
+    ],
+    "op": "lambda old: old * 5",
+    "test_div": 13,
+    "true_i": 6,
+    "false_i": 5
+  },
+  {
+    "items": [
+      60,
+      94
+    ],
+    "op": "lambda old: old + 5",
+    "test_div": 3,
+    "true_i": 1,
+    "false_i": 0
+  },
+  {
+    "items": [
+      81,
+      51,
+      85
+    ],
+    "op": "lambda old: old * old",
+    "test_div": 5,
+    "true_i": 5,
+    "false_i": 1
+  },
+  {
+    "items": [
+      98,
+      81,
+      63,
+      65,
+      84,
+      71,
+      84
+    ],
+    "op": "lambda old: old + 3",
+    "test_div": 2,
+    "true_i": 2,
+    "false_i": 3
+  }
+]

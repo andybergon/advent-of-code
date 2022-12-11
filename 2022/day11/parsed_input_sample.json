@@ -1,0 +1,44 @@
+[
+  {
+    "items": [
+      79,
+      98
+    ],
+    "op": "lambda old: old * 19",
+    "test_div": 23,
+    "true_i": 2,
+    "false_i": 3
+  },
+  {
+    "items": [
+      54,
+      65,
+      75,
+      74
+    ],
+    "op": "lambda old: old + 6",
+    "test_div": 19,
+    "true_i": 2,
+    "false_i": 0
+  },
+  {
+    "items": [
+      79,
+      60,
+      97
+    ],
+    "op": "lambda old: old * old",
+    "test_div": 13,
+    "true_i": 1,
+    "false_i": 3
+  },
+  {
+    "items": [
+      74
+    ],
+    "op": "lambda old: old + 3",
+    "test_div": 17,
+    "true_i": 0,
+    "false_i": 1
+  }
+]
