@@ -95,18 +95,17 @@ def part_one(is_sample=False, log=True):
 
 
 if __name__ == "__main__":
-    # part_one(False)  # 108240 # 50 mins (20m parsing)
-    # part_two(False)  # 25712998901 # 30 mins (25m remember lcm (mcm in IT))
+    part_one(False)  # 108240 # 50 mins (20m parsing)
+    part_two(False)  # 25712998901 # 30 mins (25m remember lcm (mcm in IT))
 
-    import timeit
-
-    print(timeit.timeit(lambda: part_one(False, False), number=1))
-    print(timeit.timeit(lambda: part_two(False, False), number=1))
+    # import timeit
+    # print(timeit.timeit(lambda: part_one(False, False), number=1))
+    # print(timeit.timeit(lambda: part_two(False, False), number=1))
 
     # dict vs dataclass
     # dicts
-    # p1: ?
-    # p2: ?
+    # p1: 0.0005
+    # p2: 0.22
     # dataclass (per iter)
     # p1: ~0.009
     # p2: 4.7
