@@ -6,7 +6,7 @@
       95,
       67
     ],
-    "op": "lambda old: old * 19",
+    "op_raw": "lambda old: old * 19",
     "test_div": 17,
     "true_i": 2,
     "false_i": 7
@@ -20,7 +20,7 @@
       56,
       70
     ],
-    "op": "lambda old: old + 2",
+    "op_raw": "lambda old: old + 2",
     "test_div": 19,
     "true_i": 7,
     "false_i": 0
@@ -36,7 +36,7 @@
       84,
       95
     ],
-    "op": "lambda old: old + 7",
+    "op_raw": "lambda old: old + 7",
     "test_div": 7,
     "true_i": 4,
     "false_i": 3
@@ -49,7 +49,7 @@
       80,
       79
     ],
-    "op": "lambda old: old + 1",
+    "op_raw": "lambda old: old + 1",
     "test_div": 11,
     "true_i": 6,
     "false_i": 4
@@ -58,7 +58,7 @@
     "items": [
       68
     ],
-    "op": "lambda old: old * 5",
+    "op_raw": "lambda old: old * 5",
     "test_div": 13,
     "true_i": 6,
     "false_i": 5
@@ -68,7 +68,7 @@
       60,
       94
     ],
-    "op": "lambda old: old + 5",
+    "op_raw": "lambda old: old + 5",
     "test_div": 3,
     "true_i": 1,
     "false_i": 0
@@ -79,7 +79,7 @@
       51,
       85
     ],
-    "op": "lambda old: old * old",
+    "op_raw": "lambda old: old * old",
     "test_div": 5,
     "true_i": 5,
     "false_i": 1
@@ -94,7 +94,7 @@
       71,
       84
     ],
-    "op": "lambda old: old + 3",
+    "op_raw": "lambda old: old + 3",
     "test_div": 2,
     "true_i": 2,
     "false_i": 3

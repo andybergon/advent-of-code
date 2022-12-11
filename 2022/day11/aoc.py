@@ -1,6 +1,7 @@
 import json
 import math
-from typing import Callable
+from dataclasses import dataclass
+from typing import Callable, List
 
 
 def get_filename(is_sample=False, parsed=True):
@@ -9,6 +10,7 @@ def get_filename(is_sample=False, parsed=True):
 
 
 def parse_monkeys(is_sample=False):
+    # TODO: do parsing instead of relying on parsed files
     rows = open(get_filename(is_sample)).read().strip().split("\n")
     monkeys = []
     for r in rows:
@@ -33,11 +35,21 @@ def parse_monkeys(is_sample=False):
     print(monkeys)
 
 
+@dataclass
+class Monkey:
+    items: List[int]
+    op_raw: str
+    test_div: int
+    true_i: int
+    false_i: int
+
+    @property
+    def op(self) -> Callable[[int], int]:
+        return eval(self.op_raw)
+
+
 def get_monkeys(is_sample):
-    # items, op, test_div, true_i, false_i
-    monkeys = json.load(open(get_filename(is_sample)))
-    for m in monkeys:
-        m['op'] = eval(m['op'])
+    monkeys = [Monkey(**m) for m in json.load(open(get_filename(is_sample)))]
     return monkeys
 
 
@@ -46,23 +58,20 @@ def print_end_round(monkeys):
         print(f'Monkey {i}: {m["items"]}')
 
 
-def monkey_business(monkeys, n_rounds, relief_f: Callable[[int], int]):
+def calc_monkey_business(monkeys: List[Monkey], n_rounds, relief_f: Callable[[int], int]):
     inspections = [0 for _ in monkeys]
     for i_round in range(1, n_rounds + 1):
         for i, m in enumerate(monkeys):
-            for worry_old in m['items']:
-                # for i in [1,2,3].pop() - works?
-                inspections[i] = inspections[i] + 1
-                worry = m['op'](worry_old)
+            for worry_old in m.items:
+                inspections[i] += 1
+                worry = m.op(worry_old)
                 worry = relief_f(worry)
-                rem = worry % m['test_div']
-                if rem:
-                    target_i = m['false_i']
-
+                if worry % m.test_div:
+                    target_i = m.false_i
                 else:
-                    target_i = m['true_i']
-                monkeys[target_i]['items'].append(worry)
-            m['items'] = []
+                    target_i = m.true_i
+                monkeys[target_i].items.append(worry)
+            m.items = []
     monkey_business = math.prod(sorted(inspections, reverse=True)[:2])
     print(monkey_business)
 
@@ -70,10 +79,10 @@ def monkey_business(monkeys, n_rounds, relief_f: Callable[[int], int]):
 def part_two(is_sample=False):
     monkeys = get_monkeys(is_sample)
     n_rounds = 10_000
-    lcm_tests = math.lcm(*[m['test_div'] for m in monkeys])
+    lcm_tests = math.lcm(*[m.test_div for m in monkeys])
     relief_f = lambda worry: worry % lcm_tests
 
-    monkey_business(monkeys, n_rounds, relief_f)
+    calc_monkey_business(monkeys, n_rounds, relief_f)
 
 
 def part_one(is_sample=False):
@@ -81,9 +90,10 @@ def part_one(is_sample=False):
     n_rounds = 20
     relief_f = lambda worry: math.floor(worry / 3)
 
-    monkey_business(monkeys, n_rounds, relief_f)
+    calc_monkey_business(monkeys, n_rounds, relief_f)
 
 
 if __name__ == "__main__":
     part_one(False)  # 108240 # 50 mins (20m parsing)
-    part_two(False)  # 25712998901 # 30 mins (25m remember mcm)
+    part_two(False)  # 25712998901 # 30 mins (25m remember lcm (mcm in IT))
+    # part 2 quite slower with @dataclass
