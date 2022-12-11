@@ -58,7 +58,7 @@ def print_end_round(monkeys):
         print(f'Monkey {i}: {m["items"]}')
 
 
-def calc_monkey_business(monkeys: List[Monkey], n_rounds, relief_f: Callable[[int], int]):
+def calc_monkey_business(monkeys: List[Monkey], n_rounds, relief_f: Callable[[int], int], log: bool = True):
     inspections = [0 for _ in monkeys]
     for i_round in range(1, n_rounds + 1):
         for i, m in enumerate(monkeys):
@@ -73,27 +73,40 @@ def calc_monkey_business(monkeys: List[Monkey], n_rounds, relief_f: Callable[[in
                 monkeys[target_i].items.append(worry)
             m.items = []
     monkey_business = math.prod(sorted(inspections, reverse=True)[:2])
-    print(monkey_business)
+    if log:
+        print(monkey_business)
 
 
-def part_two(is_sample=False):
+def part_two(is_sample=False, log=True):
     monkeys = get_monkeys(is_sample)
     n_rounds = 10_000
     lcm_tests = math.lcm(*[m.test_div for m in monkeys])
     relief_f = lambda worry: worry % lcm_tests
 
-    calc_monkey_business(monkeys, n_rounds, relief_f)
+    calc_monkey_business(monkeys, n_rounds, relief_f, log=log)
 
 
-def part_one(is_sample=False):
+def part_one(is_sample=False, log=True):
     monkeys = get_monkeys(is_sample)
     n_rounds = 20
     relief_f = lambda worry: math.floor(worry / 3)
 
-    calc_monkey_business(monkeys, n_rounds, relief_f)
+    calc_monkey_business(monkeys, n_rounds, relief_f, log=log)
 
 
 if __name__ == "__main__":
-    part_one(False)  # 108240 # 50 mins (20m parsing)
-    part_two(False)  # 25712998901 # 30 mins (25m remember lcm (mcm in IT))
-    # part 2 quite slower with @dataclass
+    # part_one(False)  # 108240 # 50 mins (20m parsing)
+    # part_two(False)  # 25712998901 # 30 mins (25m remember lcm (mcm in IT))
+
+    import timeit
+
+    print(timeit.timeit(lambda: part_one(False, False), number=1))
+    print(timeit.timeit(lambda: part_two(False, False), number=1))
+
+    # dict vs dataclass
+    # dicts
+    # p1: ?
+    # p2: ?
+    # dataclass (per iter)
+    # p1: ~0.009
+    # p2: 4.7
