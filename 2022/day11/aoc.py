@@ -1,5 +1,6 @@
 import json
 import math
+from typing import Callable
 
 
 def get_filename(is_sample=False, parsed=True):
@@ -45,20 +46,15 @@ def print_end_round(monkeys):
         print(f'Monkey {i}: {m["items"]}')
 
 
-def part_one(is_sample=False):
-    n_rounds = 20
-    relief_factor = 3
-    monkeys = get_monkeys(is_sample)
-
+def monkey_business(monkeys, n_rounds, relief_f: Callable[[int], int]):
     inspections = [0 for _ in monkeys]
-
     for i_round in range(1, n_rounds + 1):
         for i, m in enumerate(monkeys):
             for worry_old in m['items']:
                 # for i in [1,2,3].pop() - works?
                 inspections[i] = inspections[i] + 1
                 worry = m['op'](worry_old)
-                worry = math.floor(worry / relief_factor)
+                worry = relief_f(worry)
                 rem = worry % m['test_div']
                 if rem:
                     target_i = m['false_i']
@@ -72,34 +68,20 @@ def part_one(is_sample=False):
 
 
 def part_two(is_sample=False):
-    n_rounds = 10_000
-    relief_factor = 1
     monkeys = get_monkeys(is_sample)
-    div_tests = set()
-    for m in monkeys:
-        div_tests.add(m['test_div'])
-    lcm_tests = math.lcm(*div_tests)
+    n_rounds = 10_000
+    lcm_tests = math.lcm(*[m['test_div'] for m in monkeys])
+    relief_f = lambda worry: worry % lcm_tests
 
-    inspections = [0 for _ in monkeys]
+    monkey_business(monkeys, n_rounds, relief_f)
 
-    for i_round in range(1, n_rounds + 1):
-        for i, m in enumerate(monkeys):
-            for worry_old in m['items']:
-                # for i in [1,2,3].pop() - works?
-                # rename worry_new/after
-                inspections[i] = inspections[i] + 1
-                worry = m['op'](worry_old)
-                worry = worry % lcm_tests
-                rem = worry % m['test_div']
-                if rem:
-                    target_i = m['false_i']
 
-                else:
-                    target_i = m['true_i']
-                monkeys[target_i]['items'].append(worry)
-            m['items'] = []
-    monkey_business = math.prod(sorted(inspections, reverse=True)[:2])
-    print(monkey_business)
+def part_one(is_sample=False):
+    monkeys = get_monkeys(is_sample)
+    n_rounds = 20
+    relief_f = lambda worry: math.floor(worry / 3)
+
+    monkey_business(monkeys, n_rounds, relief_f)
 
 
 if __name__ == "__main__":
