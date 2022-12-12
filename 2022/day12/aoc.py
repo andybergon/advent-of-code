@@ -30,7 +30,7 @@ def elevation(v: str):
     return ord(v)
 
 
-def get_visitables(grid, min_paths, curr):
+def get_visitables(grid, curr):
     i, j = curr
     l = []
     for d in directions:
@@ -39,7 +39,6 @@ def get_visitables(grid, min_paths, curr):
         jj = j + dj
         if (
             (0 <= ii < len(grid) and 0 <= jj < len(grid[0]))
-            and min_paths[ii][jj] == math.inf
             and elevation(grid[ii][jj]) <= elevation(grid[i][j]) + 1
         ):
             l.append((ii, jj))
@@ -49,7 +48,7 @@ def get_visitables(grid, min_paths, curr):
 def calc_min_paths(grid, min_paths, q):
     while q:
         curr = q.popleft()
-        visitables = get_visitables(grid, min_paths, curr)
+        visitables = [v for v in get_visitables(grid, curr) if min_paths[v[0]][v[1]] == math.inf]
         for visitable in visitables:
             q.append(visitable)
             ci, cj = curr
@@ -71,18 +70,25 @@ def get_min_path(grid, start, end):
 
 
 def part_one(is_sample=False):
-    rows = open(get_filename(is_sample)).read().splitlines()
-    grid = [[*row] for row in rows]
+    grid = get_grid(is_sample)
+
     curr = find(grid, "S")
     end = find(grid, "E")
+
     m = get_min_path(grid, curr, end)
 
     print(m)
 
 
-def part_two(is_sample=False):
+def get_grid(is_sample):
     rows = open(get_filename(is_sample)).read().splitlines()
     grid = [[*row] for row in rows]
+    return grid
+
+
+def part_two(is_sample=False):
+    grid = get_grid(is_sample)
+
     end = find(grid, "E")
 
     m = math.inf
