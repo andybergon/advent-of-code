@@ -21,7 +21,6 @@ def solution(is_sample=False):
 
     G = build_graph(grid)
 
-    # TODO: check why -1
     path_len = len(nx.shortest_path(G, start, end))
     print(path_len - 1)
 
