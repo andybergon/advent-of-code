@@ -16,6 +16,15 @@ def find(grid, c):
                 return i, j
 
 
+def find_all(grid, c):
+    l = []
+    for i in range(len(grid)):
+        for j in range(len(grid[i])):
+            if grid[i][j] == c:
+                l.append((i, j))
+    return l
+
+
 def elevation(v: str):
     v = v.replace("S", "a").replace("E", "z")
     return ord(v)
@@ -30,7 +39,7 @@ def get_visitables(grid, min_paths, curr):
         jj = j + dj
         if (
             (0 <= ii < len(grid) and 0 <= jj < len(grid[0]))
-            and min_paths[ii][jj] == -math.inf
+            and min_paths[ii][jj] == math.inf
             and elevation(grid[ii][jj]) <= elevation(grid[i][j]) + 1
         ):
             l.append((ii, jj))
@@ -48,28 +57,40 @@ def calc_min_paths(grid, min_paths, q):
             min_paths[vi][vj] = min_paths[ci][cj] + 1
 
 
-def part_one(is_sample=False):
-    # check .splitlines()
-    rows = open(get_filename(is_sample)).read().strip().split("\n")
-    grid = [[*row] for row in rows]
-    curr = find(grid, "S")
-    end = find(grid, "E")
-    min_paths = [[-math.inf for _ in row] for row in rows]
-    min_paths[curr[0]][curr[1]] = 0
+def get_min_path(grid, start, end):
+    min_paths = [[math.inf for _ in row] for row in grid]
+    min_paths[start[0]][start[1]] = 0
+
     q = collections.deque()
-    q.append(curr)
+    q.append(start)
 
     calc_min_paths(grid, min_paths, q)
 
     ei, ej = end
-    print(min_paths[ei][ej])
+    return min_paths[ei][ej]
+
+
+def part_one(is_sample=False):
+    rows = open(get_filename(is_sample)).read().splitlines()
+    grid = [[*row] for row in rows]
+    curr = find(grid, "S")
+    end = find(grid, "E")
+    m = get_min_path(grid, curr, end)
+
+    print(m)
 
 
 def part_two(is_sample=False):
-    l = open(get_filename(is_sample)).read().strip()
-    print(l)
+    rows = open(get_filename(is_sample)).read().splitlines()
+    grid = [[*row] for row in rows]
+    end = find(grid, "E")
+
+    m = math.inf
+    for curr in [*find_all(grid, "a"), find(grid, "S")]:
+        m = min(m, get_min_path(grid, curr, end))
+    print(m)
 
 
 if __name__ == "__main__":
-    # part_one(False)  # 408 # 1h42m mins
-    part_two(True)  # ? # ? mins
+    part_one(False)  # 408 # 1h42m mins
+    part_two(False)  # 399 # 10 mins
